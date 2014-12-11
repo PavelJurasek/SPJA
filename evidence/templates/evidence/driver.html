@@ -1,0 +1,31 @@
+{% extends 'evidence/index.html' %}
+
+{% block title %}Driver {{ driver.name }}{% endblock %}
+
+{% block content %}
+    <a class="btn btn-sm btn-default" href="{% url 'drivers' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to drivers</a>
+
+    <h1>{{ driver.name }}</h1>
+
+    <p>License since {{ driver.license_since|date:"j.n.Y" }}</p>
+    <p>Driven: {{ odometer }} km</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Car</th>
+                <th>Date</th>
+                <th>Distance</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ride in driver.ride_set.all %}
+            <tr>
+                <td><a href="{% url 'car' ride.car.id %}">{{ ride.car }}</a></td>
+                <td>{{ ride.date_start|date:'j.n.Y' }}{% if ride.date_start != ride.date_end %} - {{ ride.date_end|date:'j.n.Y' }}{% endif %}</td>
+                <td>{{ ride.get_distance }} km</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

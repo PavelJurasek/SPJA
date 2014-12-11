@@ -1,0 +1,63 @@
+{% extends 'evidence/index.html' %}
+
+{% block title %}Add car{% endblock %}
+
+{% block content %}
+    <a class="btn btn-sm btn-default" href="{% url 'cars' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to cars</a>
+
+    <h1>Add car</h1>
+
+    <form action="{% url 'add-car' %}" method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="manufacturer">Manufacturer</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="text" id="manufacturer" name="manufacturer" />
+            </div>
+            <div class="clearfix"></div>
+
+            <label class="control-label col-sm-2" for="model">Model</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="text" id="model" name="model" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="production_year">Production year</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="date" id="production_year" name="production_year" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div class="form-group clearfix">
+            <label class="control-label col-sm-2" for="fuel">Fuel</label>
+            <div class="col-sm-3">
+{#                <input class="form-control" type="number" id="fuel" name="fuel" />#}
+                <select class="form-control" name="fuel">
+                    <option selected>Diesel</option>
+                    <option>Gasoline</option>
+                </select>
+            </div>
+
+            <label class="control-label col-sm-offset-1 col-sm-2" for="consumption">Consumption</label>
+            <div class="col-sm-3 input-group">
+                <input class="form-control" type="number" id="consumption" name="consumption" step="0.1" />
+                <span class="input-group-addon">l/100 km</span>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label class="control-label col-sm-2" for="odometer_init">Odometer state</label>
+            <div class="col-sm-2">
+                <input class="form-control" type="number" id="odometer_init" name="odometer_init" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </div>
+    </form>
+{% endblock %}

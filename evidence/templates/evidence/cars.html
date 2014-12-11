@@ -1,0 +1,21 @@
+{% extends 'evidence/index.html' %}
+
+{% block title %}Cars{% endblock %}
+
+{% block content %}
+    <a class="btn btn-sm btn-default" href="{% url 'home' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to dashboard</a>
+
+    <a class="btn btn-primary btn-sm" href="{% url 'add-car' %}">Add car</a>
+
+    <h1>Cars</h1>
+
+    {% if cars %}
+        <ul>
+        {% for car in cars %}
+            <li><a href="{% url 'car' car.id %}">{{ car }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No cars</p>
+    {% endif %}
+{% endblock %}

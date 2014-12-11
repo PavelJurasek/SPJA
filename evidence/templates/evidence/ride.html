@@ -1,0 +1,35 @@
+{% extends 'evidence/index.html' %}
+
+{% block title %}Ride {{ ride }}{% endblock %}
+
+{% block content %}
+    <a class="btn btn-sm btn-default" href="{% url 'cars' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to cars</a>
+    <a class="btn btn-sm btn-default" href="{% url 'drivers' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to drivers</a>
+
+    <h1>{{ ride }}</h1>
+
+    <p>Car: {{ ride.car }}</p>
+    <p>Odometer state (initial / final): {{ ride.initial }} / {{ ride.final }}</p>
+    <p>Distance: {{ ride.get_distance }} km</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Odometer</th>
+                <th>Amount</th>
+                <th>Price / l</th>
+                <th>Total price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for refuel in ride.refuel_set.all %}
+            <tr>
+                <td>{{ refuel.odometer }}</td>
+                <td>{{ refuel.amount }} l</td>
+                <td>{{ refuel.price }} kč</td>
+                <td>{{ refuel.total_price }} kč</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

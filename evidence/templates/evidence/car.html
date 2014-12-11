@@ -1,0 +1,91 @@
+{% extends 'evidence/index.html' %}
+
+{% block title %}Car {{ car }}{% endblock %}
+
+{% block content %}
+    <a class="btn btn-sm btn-default" href="{% url 'cars' %}"><span class="glyphicon glyphicon-chevron-left"></span> Back to cars</a>
+
+    <h1>{{ car }}</h1>
+
+    <p>Production year: {{ car.production_year }}</p>
+    <p>Initial odometer state: {{ car.odometer_init }}</p>
+    <p>Total distance: {{ distance }}</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Driver</th>
+                <th>Date</th>
+                <th>Distance</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ride in rides %}
+            <tr>
+                <td><a href="{% url 'driver' ride.driver.id %}">{{ ride.driver }}</a></td>
+                <td>{{ ride.date_start|date:'j.n.Y' }}{% if ride.date_start != ride.date_end %} - {{ ride.date_end|date:'j.n.Y' }}{% endif %}</td>
+                <td>{{ ride.get_distance }} km</td>
+                <td>
+                    <a href="{% url 'ride' ride.id %}">detail</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Add ride</h2>
+
+    <form action="{% url 'car' car.id %}" method="post">
+    {% csrf_token %}
+        <div class="form-group clearfix">
+            <label class="control-label col-sm-2" for="car">Car</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">{{ car }}</p>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label class="control-label col-sm-2" for="driver">Driver</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="driver" name="driver">
+                    {% for driver in drivers %}
+                        <option value="{{ driver.id }}">{{ driver }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label class="control-label" for="start">Dates</label><br>
+
+            <label class="control-label col-sm-2" for="start">Start</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="date" id="start" name="start" value="{{ today|date:'Y-m-d' }}" />
+            </div>
+
+            <label class="control-label col-sm-2" for="end">End</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="date" id="end" name="end" value="{{ today|date:'Y-m-d' }}" />
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label class="control-label" for="initial">Odometer</label><br>
+
+            <label class="control-label col-sm-2" for="initial">Initial</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="number" id="initial" name="initial" value="{{ latest_ride.final }}" disabled />
+            </div>
+
+            <label class="control-label col-sm-2" for="final">Final</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="number" id="final" name="final" min="{{ latest_ride.final }}" value="{{ latest_ride.final }}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </div>
+    </form>
+{% endblock %}
